@@ -29,14 +29,21 @@ function findSteps(schemeId) {
 }
 
 function add(scheme) {
+  console.log(scheme)
   return db('schemes').insert(scheme).then(([id]) => {
     return findById(id)
   })
 }
 
-function addStep(stepData, schemeId) {
-  return db('steps')
-    .insert(stepData)
+async function addStep(stepData, scheme_id) {
+  await db('steps').insert({...stepData, scheme_id})
+  return findSteps(scheme_id)
+  
+  // return db('steps')
+  //   .insert({...stepData, schemeId})
+  //   .then(([id]) => {
+  //     return findById(id)
+  //   })
 }
 
 function update(changes, id) {
